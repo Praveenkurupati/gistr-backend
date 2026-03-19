@@ -4,17 +4,23 @@ import { Entity } from "../models/Entity";
 import { Tag } from "../models/Tag";
 import { TagRelation } from "../models/TagRelation";
 
-// Use a separate test database
-const TEST_DB_URI = process.env.MONGODB_URI_TEST || "mongodb://localhost:27017/gistr_test";
+import { MongoMemoryServer } from "mongodb-memory-server";
+
+let mongoServer: MongoMemoryServer;
 
 describe("TagService - Attach Tags", () => {
   beforeAll(async () => {
-    await mongoose.connect(TEST_DB_URI);
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
+    await mongoose.connect(uri);
   });
 
   afterAll(async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
+    if (mongoServer) {
+      await mongoServer.stop();
+    }
   });
 
   beforeEach(async () => {

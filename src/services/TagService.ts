@@ -69,6 +69,12 @@ export class TagService {
       return { attached: [] }; // Idempotent success (all already attached)
     }
 
+    // 5b. Prevent Tag Explosion: Max 50 tags per entity
+    const MAX_TAGS_PER_ENTITY = 50;
+    if (existingRelations.length + newTagsToAttach.length > MAX_TAGS_PER_ENTITY) {
+      throw new BadRequestError(`Cannot attach tags. An entity can have a maximum of ${MAX_TAGS_PER_ENTITY} tags.`);
+    }
+
     // 6. Bulk insert new TagRelations
     const relationOps = newTagsToAttach.map((t) => ({
       insertOne: {

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { EntitySearchService, SearchOptions } from "../services/EntitySearchService";
 import { EntityType } from "../models/Entity";
 import { BadRequestError } from "../utils/errors";
+import { EntityService } from "../services/EntityService";
 
 export const entitiesRouter = Router();
 
@@ -30,4 +31,9 @@ entitiesRouter.get("/search", async (req, res) => {
   const results = await EntitySearchService.searchEntities(options);
 
   res.status(200).json(results);
+});
+
+entitiesRouter.delete("/:id", async (req, res) => {
+  const result = await EntityService.deleteEntity(req.params.id);
+  res.status(200).json(result);
 });

@@ -21,18 +21,23 @@ const seedDatabase = async () => {
     { type: "source", content: "Understanding MongoDB Aggregation Framework", metadata: { author: "Alice" } },
     { type: "source", content: "PostgreSQL vs MongoDB: Which Database to choose?", metadata: { url: "https://example.com" } },
     { type: "source", content: "Getting started with TypeScript and Express", metadata: { score: 98 } },
+    { type: "source", content: "Redis for Caching in Node.js", metadata: { author: "Bob" } },
+    { type: "source", content: "System Design: Database Indexing Strategies", metadata: { url: "https://youtube.com" } },
   ]);
 
   const snippets = await Entity.insertMany([
     { type: "snippet", content: "db.collection.aggregate([{ $match: { status: 'A' } }])" },
     { type: "snippet", content: "SELECT * FROM users WHERE active = true;" },
     { type: "snippet", content: "app.use(express.json());" },
+    { type: "snippet", content: "Always index fields you frequently query by." },
+    { type: "snippet", content: "Redis is an in-memory database used primarily as a cache." },
   ]);
 
   const aiResponses = await Entity.insertMany([
     { type: "ai_response", content: "MongoDB is a NoSQL database that stores data in JSON-like documents. It is highly scalable." },
     { type: "ai_response", content: "For strong ACID compliance and structured relational data, PostgreSQL is often preferred." },
     { type: "ai_response", content: "Node.js allows you to build scalable network applications using JavaScript." },
+    { type: "ai_response", content: "Indexing increases read speed enormously but slows down write performance." },
   ]);
 
   console.log("✅ Created pure entities");
@@ -41,19 +46,24 @@ const seedDatabase = async () => {
   console.log("🏷️ Attaching tags to entries...");
 
   // Source overlapping
-  await TagService.attachTags(sources[0].id, "source", ["mongodb", "database", "nosql"]);
-  await TagService.attachTags(sources[1].id, "source", ["mongodb", "database", "postgresql", "sql"]);
+  await TagService.attachTags(sources[0].id, "source", ["mongodb", "database", "nosql", "aggregation", "backend"]);
+  await TagService.attachTags(sources[1].id, "source", ["mongodb", "database", "postgresql", "sql", "backend"]);
   await TagService.attachTags(sources[2].id, "source", ["typescript", "nodejs", "express", "backend"]);
+  await TagService.attachTags(sources[3].id, "source", ["redis", "database", "caching", "nodejs", "backend"]);
+  await TagService.attachTags(sources[4].id, "source", ["database", "indexing", "performance", "backend"]);
 
   // Snippets overlapping
   await TagService.attachTags(snippets[0].id, "snippet", ["mongodb", "database", "aggregation"]);
   await TagService.attachTags(snippets[1].id, "snippet", ["postgresql", "database", "sql"]);
   await TagService.attachTags(snippets[2].id, "snippet", ["nodejs", "express", "backend"]);
+  await TagService.attachTags(snippets[3].id, "snippet", ["database", "indexing", "performance"]);
+  await TagService.attachTags(snippets[4].id, "snippet", ["redis", "database", "caching"]);
 
   // AI Responses overlapping
-  await TagService.attachTags(aiResponses[0].id, "ai_response", ["mongodb", "database", "nosql"]);
+  await TagService.attachTags(aiResponses[0].id, "ai_response", ["mongodb", "database", "nosql", "scalability"]);
   await TagService.attachTags(aiResponses[1].id, "ai_response", ["postgresql", "database", "sql", "acid"]);
   await TagService.attachTags(aiResponses[2].id, "ai_response", ["nodejs", "backend", "javascript"]);
+  await TagService.attachTags(aiResponses[3].id, "ai_response", ["database", "indexing", "performance"]);
 
   console.log("✅ Tags attached successfully");
 
