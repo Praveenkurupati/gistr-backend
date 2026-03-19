@@ -62,24 +62,37 @@ Gistr is a backend service that enables scalable, concurrent-safe tagging and po
 
 ## Project Structure
 
-```
+```text
 gistr-backend/
 ├── src/
+│   ├── config/
+│   │   ├── db.ts              # MongoDB connection setup
+│   │   └── env.ts             # Environment variables validation
 │   ├── models/
-│   │   ├── Entity.js          # Polymorphic entity model
-│   │   ├── Tag.js             # Global normalized tag store
-│   │   └── TagRelation.js     # Explicit entity-tag join table
-│   ├── services/
-│   │   ├── TagService.js      # Tag upsert, attachment, usageCount logic
-│   │   └── EntityService.js   # Entity CRUD + soft delete
+│   │   ├── Entity.ts          # Polymorphic entity model
+│   │   ├── Tag.ts             # Global normalized tag store
+│   │   └── TagRelation.ts     # Explicit entity-tag join table
 │   ├── routes/
-│   │   ├── entities.js        # Entity routes + search endpoint
-│   │   └── tags.js            # Tag attach/detach routes
-│   └── app.js                 # Express app entry point
-├── tests/
-│   └── ...                    # Integration & unit tests
+│   │   ├── analytics.ts       # Tag analytics endpoints
+│   │   ├── entities.ts        # Entity routes + search endpoint
+│   │   └── tags.ts            # Tag attach/detach routes
+│   ├── seed/
+│   │   └── seed.ts            # Database seeder script
+│   ├── services/
+│   │   ├── AnalyticsService.ts    # Aggregation pipelines for analytics
+│   │   ├── EntitySearchService.ts # Tag-based AND/OR search logic
+│   │   ├── EntityService.ts       # Entity CRUD + soft delete
+│   │   └── TagService.ts          # Tag upsert, attachment, usageCount logic
+│   ├── tests/
+│   │   └── tag.test.ts        # Integration & unit tests
+│   ├── utils/
+│   │   ├── errors.ts          # Custom HTTP error classes
+│   │   └── tagUtils.ts        # Tag normalization helpers
+│   ├── app.ts                 # Express app setup and middleware
+│   └── test-api.ts            # E2E live server testing script
 ├── .env.example
 ├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
